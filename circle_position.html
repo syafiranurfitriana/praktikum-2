@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Canvas Layers Test</title>
+</head>
+
+<!-- 
+
+FULLPAGE CANVAS DAN CANVAS LAYERING
+
+Step 1:
+Setting layer menggunakan CSS. Pengaturan ini akan membuat posisi canvas seperti layer yang bertumpuk.
+z-index paling rendah menunjukkan posisi layer berada paling belakang.
+
+Step-2:
+Menyusun objek dalam formasi melingkar
+
+Step-3
+Menyusun objek dalam formasi melingkar dan random
+
+Step-4
+Menganimasikan Formasi objek
+
+@created by farid.suryanto@is.uad.ac.id
+ -->
+
+<style type="text/css">
+body{
+	position: relative;
+	margin: 0px;
+}
+#layer1{
+	z-index: 1;
+	position: absolute;
+	width: 100%;
+	
+}
+#layer2{
+	z-index: 3;
+	position: absolute;	
+	width: 100%;	
+}
+
+#layer3{
+	z-index: 2;
+	position: absolute;	
+	width: 100%;
+}
+
+
+</style>
+<body onresize="init()">
+
+<canvas id="layer1"></canvas>
+<canvas id="layer2"></canvas>
+<canvas id="layer3"></canvas>
+
+<script type="text/javascript" >
+
+//definisikan variabel
+
+var 
+layer1, layer2, layer3,
+ctx1, ctx2, ctx3, screenW, screenH;
+
+
+//fungsi inisial
+
+function init() {
+	layer1=document.getElementById('layer1');
+	layer2=document.getElementById('layer2');
+	layer3=document.getElementById('layer3');
+	ctx1=layer1.getContext('2d');
+	ctx2=layer2.getContext('2d');
+	ctx3=layer3.getContext('2d');
+	
+	//menentukan ukuran screen dengan mengambil ukuran layar
+	screenW=window.innerWidth;
+	screenH=window.innerHeight;
+		
+	//mengatur canvas menjadi fullpage
+	layer1.width=screenW;
+	layer1.height=screenH;
+	
+	layer2.width=screenW;
+	layer2.height=screenH;
+	
+	layer3.width=screenW;
+	layer3.height=screenH;
+	
+	
+	
+	//draw layer 1
+	//draw();
+	
+	//draw layer 2
+	//draw2();
+	
+	//draw layer 3
+	//step-1 tampilkan dulu tanpa setInterval
+	//draw3(3);
+	setInterval(function() {
+		draw(ctx3,550,20,5,2);
+		draw(ctx2,400,30,5,2);
+		draw(ctx1,200,50,5,5);
+	},200);
+	//setInterval(draw2,200);
+	
+}
+
+function draw(ctx, radius, circleSize, totalObject, randomSize)
+{
+	ctx.clearRect(0,0,screenW,screenH);
+	var total_dot=totalObject;
+	var radius=radius;
+	var dots=[];
+	for (var i=1; i<=total_dot; i++) {		
+		sudut = 360/total_dot*i;		
+		posx = Math.cos(sudut*(Math.PI/180))*radius/2;
+		posy = Math.sin(sudut*(Math.PI/180))*radius/2;
+
+		
+		var newPosx=posx+(screenW/2);
+		var newPosy=posy+(screenH/2);
+		
+		//posisi tanpa random
+		//var random1=0, random2=0;
+		//randomize position
+		var randSize=randomSize;
+		var random1=Math.floor((Math.random() * randSize) );
+		var random2=Math.floor((Math.random() * randSize) );
+
+		
+		//membuat objek baru
+		createCircle(ctx,newPosx+random1,newPosy+random2, circleSize);
+		
+	}	
+}
+
+
+function createCircle(ctx,x,y,size) {
+	//set radius secara random
+	//var rad=Math.floor((Math.random() * 50) +10);
+	//set radius secara konstan
+	ctx.beginPath();
+	ctx.arc(x,y,size,0,2*Math.PI);
+	ctx.fill();
+	ctx1.fillStyle="#192041";
+	ctx2.fillStyle="#7c472b";
+	ctx3.fillStyle="#eeb94e";
+	ctx.stroke(); 
+}
+
+init();
+
+
+
+</script>
+
+
+</body>
+</html>
